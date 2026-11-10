@@ -25,13 +25,13 @@ async function getKomikById(req, res) {
 }
 
 async function createKomik(req, res) {
-    const { judul, description, author } = req.body;
+    const { title, description, author } = req.body;
     try {
-        if (!judul) {
-            return res.status(400).json({ error: 'Judul is required' });
+        if (!title) {
+            return res.status(400).json({ error: 'title is required' });
         }
         const newKomik = await db.Komik.create({ 
-            judul, description, author 
+            title, description, author 
         });
         res.status(201).json(newKomik);
     } catch (err) {
@@ -42,13 +42,13 @@ async function createKomik(req, res) {
 
 async function updateKomik(req, res) {
     const { id } = req.params;
-    const { judul, description, author } = req.body;
+    const { title, description, author } = req.body;
     try {
         const komik = await db.Komik.findByPk(id);
         if (!komik) {
             return res.status(404).json({ error: 'Komik not found' });
         }
-        if (judul !== undefined) komik.judul = judul;
+        if (title !== undefined) komik.title = title;
         if (description !== undefined) komik.description = description;
         if (author !== undefined) komik.author = author;
         await komik.save();
